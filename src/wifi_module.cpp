@@ -6,6 +6,7 @@
 static bool ntp_synced = false;
 static unsigned long last_reconnect_attempt = 0;
 static unsigned long last_ntp_sync = 0;
+static bool use_fallback = false;
 
 void wifi_init() {
     WiFi.mode(WIFI_STA);
@@ -38,9 +39,15 @@ void wifi_update() {
         ntp_synced = false;
         if ((now - last_reconnect_attempt) >= WIFI_RECONNECT_INTERVAL) {
             last_reconnect_attempt = now;
-            Serial.println("[WIFI] Reconnecting...");
+            use_fallback = !use_fallback; // สลับการเชื่อมต่อ
             WiFi.disconnect();
-            WiFi.begin();
+            if (use_fallback) {
+                Serial.println("[WIFI] Reconnecting to Fallback WiFi...");
+                WiFi.begin(FALLBACK_WIFI_SSID, FALLBACK_WIFI_PASSWORD);
+            } else {
+                Serial.println("[WIFI] Reconnecting to Saved WiFi...");
+                WiFi.begin();
+            }
         }
         return;
     }

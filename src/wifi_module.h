@@ -8,6 +8,8 @@
 #define NTP_SERVER               "pool.ntp.org"
 #define GMT_OFFSET_SEC           25200    // GMT+7 = 7*3600
 #define DAYLIGHT_OFFSET_SEC      0
+#define FALLBACK_WIFI_SSID       "omgdigital"
+#define FALLBACK_WIFI_PASSWORD   "Ts3u9#2020"
 
 // เริ่มต้น WiFi + NTP
 void wifi_init();
